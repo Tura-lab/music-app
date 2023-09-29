@@ -6,7 +6,8 @@ const musicModel = require("../models/music");
 // get all musics
 router.get("/", async (req, res, next) => {
   try {
-    const musics = await musicModel.find();
+    // latest musics first
+    const musics = await musicModel.find().sort({ createdAt: -1 });
     res.json(musics);
   } catch (err) {
     // send the error message
@@ -48,11 +49,8 @@ router.patch("/:id", async (req, res, next) => {
     if (req.body.title) {
       music.title = req.body.title;
     }
-    if (req.body.file) {
+    if (req.body.artist) {
       music.artist = req.body.artist;
-    }
-    if (req.body.description) {
-      music.album = req.body.album;
     }
 
     const updatedMusic = await music.save();

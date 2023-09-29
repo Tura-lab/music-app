@@ -8,6 +8,7 @@ import { closeEditModal } from "../editModal/actions";
 import { RootState } from "../main";
 
 import { toast } from "react-hot-toast";
+import ThreeDotLoader from "../components/ThreeDotLoader";
 
 const EditModal = (props: any) => {
   const selectedMusic = useSelector(
@@ -24,6 +25,7 @@ const EditModal = (props: any) => {
   const showModal = useSelector((state: RootState) => state.editModalReducer.isOpen);
   const editError = useSelector((state: RootState) => state.musicReducer.editError);
   const editSuccess = useSelector((state: RootState) => state.musicReducer.editSuccess);
+  const editPending = useSelector((state: RootState) => state.musicReducer.editPending);
 
 
   useEffect(() => {
@@ -50,7 +52,11 @@ const EditModal = (props: any) => {
       toast.success("Music edited successfully");
       handleModalClose();
     }
-  }, [editSuccess]);
+    if (editError){
+      console.log("YAPPPP edit error")
+      toast.error("Something went wrong");
+    }
+  }, [editSuccess, editError]);
 
   const handleMusicEdit = () => {
     if (!title || !artist) {
@@ -233,7 +239,12 @@ const EditModal = (props: any) => {
                   transition: "scale 0.5s",
                 }}
               >
-                Continue
+                {editPending && (
+                  <div css={{ padding: ".5rem 0" }}>
+                    <ThreeDotLoader />
+                  </div>
+                )}
+                {!editPending && "Continue"}
               </button>
             </div>
           </div>

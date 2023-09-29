@@ -10,15 +10,28 @@ import { useSelector, useDispatch } from "react-redux";
 import { openEditModal } from "../editModal/actions";
 import { getAllMusics, setSelectedMusic } from "../music/actions";
 import { openDeleteModal } from "../deleteModal/actions";
+import { RootState } from "../main";
+import ThreeDotLoader from "./ThreeDotLoader";
+import {toast} from "react-hot-toast";
 
 const SongList = () => {
   const dispatch = useDispatch();
   const musics = useSelector((state: any) => state.musicReducer.musics);
+  const getAllPending = useSelector(
+    (state: RootState) => state.musicReducer.getAllPending
+  );
+  const getAllError = useSelector((state: RootState) => state.musicReducer.getAllError);
 
   useEffect(() => {
     // get all musics
     dispatch(getAllMusics());
   }, []);
+
+  useEffect(() => {
+    if (getAllError) {
+      toast.error("Something went wrong");
+    }
+  }, [getAllError]);
 
   const handleDeleteClick = (id: string) => {
     // set the selected music
@@ -43,6 +56,8 @@ const SongList = () => {
         css={{
           display: "flex",
           flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
           padding: "2rem 10rem",
           "@media (max-width: 890px)": {
             padding: "2rem 1rem",
@@ -104,7 +119,17 @@ const SongList = () => {
           >
             <BiTimeFive size={24} />
           </div>
-
+          {getAllPending && (
+            <div
+              css={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+              }}
+            >
+              <ThreeDotLoader />
+            </div>
+          )}
           {musics.map((music: any, i: any) => (
             <React.Fragment key={i}>
               <div

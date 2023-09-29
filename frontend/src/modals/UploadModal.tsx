@@ -7,8 +7,9 @@ import { addMusic } from "../music/actions";
 import { closeUploadModal } from "../uploadModal/actions";
 
 import { toast } from "react-hot-toast";
+import ThreeDotLoader from "../components/ThreeDotLoader";
 
-const UploadModal = (props: any) => {
+const UploadModal = () => {
   const [title, setTitle] = useState("");
   const [artist, setArtist] = useState("");
   const [file, setFile] = useState<File | null>(null);
@@ -38,11 +39,14 @@ const UploadModal = (props: any) => {
       setFile(null);
       setTitle("");
       setArtist("");
-      
+
       toast.success("Music added successfully");
       handleModalClose();
     }
-
+    if (addError) {
+      console.log("YAPPPP add error");
+      toast.error("Something went wrong");
+    }
   }, [addSuccess, addError, addPending]);
 
   const handleModalClose = () => {
@@ -99,10 +103,7 @@ const UploadModal = (props: any) => {
         if (typeof reader.result !== "string") return;
         fileToSend.file = reader.result;
 
-
         dispatch(addMusic(fileToSend));
-
-        
       };
     };
   };
@@ -344,6 +345,7 @@ const UploadModal = (props: any) => {
                 </div>
               )}
               <button
+                disabled={addPending}
                 onClick={handleMusicSubmit}
                 css={{
                   width: "100%",
@@ -361,7 +363,12 @@ const UploadModal = (props: any) => {
                   transition: "scale 0.5s",
                 }}
               >
-                Upload
+                {addPending && (
+                  <div css={{ padding: "1rem 0" }}>
+                    <ThreeDotLoader />
+                  </div>
+                )}
+                {!addPending && "Upload"}
               </button>
             </div>
           </div>

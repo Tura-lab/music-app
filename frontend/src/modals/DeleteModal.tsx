@@ -6,6 +6,7 @@ import { deleteMusic } from "../music/actions";
 import { RootState } from "../main";
 import { closeDeleteModal } from "../deleteModal/actions";
 import { toast } from "react-hot-toast";
+import ThreeDotLoader from "../components/ThreeDotLoader";
 
 const DeleteModal = () => {
   const selectedMusic = useSelector(
@@ -18,6 +19,7 @@ const DeleteModal = () => {
   const showModal = useSelector((state: RootState) => state.deleteModalReducer.isOpen);
   const deleteError = useSelector((state: RootState) => state.musicReducer.deleteError);
   const deleteSuccess = useSelector((state: RootState) => state.musicReducer.deleteSuccess);
+  const deletePending = useSelector((state: RootState) => state.musicReducer.deletePending);
 
   useEffect(() => {
     setOpenModal(showModal);
@@ -36,7 +38,11 @@ const DeleteModal = () => {
       handleModalClose();
       toast.success("Music deleted successfully");
     }
-  }, [deleteSuccess]);
+    if (deleteError){
+      console.log("YAPPPP delete error");
+      toast.error("Something went wrong");
+    }
+  }, [deleteSuccess, deleteError]);
 
   const handleDeleteMusic = () => {
     dispatch(deleteMusic(selectedMusic._id));
@@ -154,7 +160,12 @@ const DeleteModal = () => {
                   transition: "scale 0.5s",
                 }}
               >
-                Delete
+                {deletePending && (
+                  <div css={{ padding: "1rem 0" }}>
+                    <ThreeDotLoader />
+                  </div>
+                )}
+                {!deletePending && "Delete"}
               </button>
             </div>
           </div>
