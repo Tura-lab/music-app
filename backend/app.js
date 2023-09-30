@@ -12,7 +12,6 @@ app.use(cors({ origin: "*"}));
 const port = process.env.PORT || 3000;
 
 // import routes
-const users = require('./routes/users');
 const music = require('./routes/music');
 
 const router = express.Router();
@@ -44,7 +43,6 @@ async function connect() {
 connect().catch((error) => console.log("Error connecting to DB: ", error));
 
 // assign the controller to the route
-app.use('/users', users);
 app.use('/music', music);
 
 // error route
