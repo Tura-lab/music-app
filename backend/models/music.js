@@ -9,10 +9,6 @@ const MusicSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  file: {
-    type: String,
-    required: true,
-  },
   duration: {
     type: String,
     required: true,

@@ -80,7 +80,6 @@ const UploadModal = () => {
     var fileToSend: any = {
       title,
       artist,
-      file,
     };
 
     const audtio = new Audio();
@@ -94,17 +93,17 @@ const UploadModal = () => {
         seconds < 10 ? "0" : ""
       }${seconds}`;
 
-      // digest the file to base64 to send to the server
-      const reader = new FileReader();
-      reader.readAsDataURL(file!);
-      reader.onloadend = () => {
-        // dispatch action
+      // // digest the file to base64 to send to the server
+      // const reader = new FileReader();
+      // reader.readAsDataURL(file!);
+      // reader.onloadend = () => {
+      //   // dispatch action
 
-        if (typeof reader.result !== "string") return;
-        fileToSend.file = reader.result;
+      //   if (typeof reader.result !== "string") return;
+      //   fileToSend.file = reader.result;
 
-        dispatch(addMusic(fileToSend));
-      };
+      // };
+      dispatch(addMusic(fileToSend));
     };
   };
 
