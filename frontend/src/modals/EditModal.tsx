@@ -10,7 +10,7 @@ import { RootState } from "../main";
 import { toast } from "react-hot-toast";
 import ThreeDotLoader from "../components/ThreeDotLoader";
 
-const EditModal = (props: any) => {
+const EditModal = () => {
   const selectedMusic = useSelector(
     (state: any) => state.musicReducer.selectedMusic
   );

@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
 
 import Container from "./Container";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { FiMenu } from "react-icons/fi";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { openUploadModal } from "../uploadModal/actions";
 
 
@@ -18,11 +18,11 @@ const Navbar = () => {
   const navbarItems: string[] = [];
   
   const dispatch = useDispatch();
-  const isOpen = useSelector((state: any) => state.uploadModalReducer.isOpen);
+  // const isOpen = useSelector((state: any) => state.uploadModalReducer.isOpen);
 
-  const handleMenuItemClick = useCallback((item :string) => {
-    setActiveTab(item);
-  }, []);
+  // const handleMenuItemClick = useCallback((item :string) => {
+  //   setActiveTab(item);
+  // }, []);
   
 
   return (
