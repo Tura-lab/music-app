@@ -1,4 +1,3 @@
-import { EDIT_MUSIC_SUCCESS } from "../music/actions";
 import { OPEN_EDIT_MODAL, CLOSE_EDIT_MODAL } from "./actions";
 
 const initialState = {
