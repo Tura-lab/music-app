@@ -7,7 +7,6 @@ import EditModal from "./modals/EditModal";
 import UploadModal from "./modals/UploadModal";
 import DeleteModal from "./modals/DeleteModal";
 import { Toaster } from "react-hot-toast";
-import ThreeDotLoader from "./components/ThreeDotLoader";
 
 function App() {
   return (
