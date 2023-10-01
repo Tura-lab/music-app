@@ -31,6 +31,7 @@ router.post("/", async (req, res, next) => {
   try {
     console.log("ADDING");
     const musicData = req.body;
+    console.log(musicData)
     const music = await new musicModel(musicData).save();
 
     res.status(201).json(music);

@@ -16,11 +16,15 @@ import {
   ADD_MUSIC_REQUESTED,
   DELETE_MUSIC_REQUESTED,
   EDIT_MUSIC_REQUESTED,
+  SET_PLAYING_MUSIC,
+  SET_MUSIC_PLAY,
 } from "./actions";
 
 interface MusicState {
   musics: any[];
   selectedMusic: any;
+  playingMusic: any;
+  musicPlaying: boolean;
 
   getAllPending: boolean;
   getAllSuccess: boolean | null;
@@ -42,6 +46,9 @@ interface MusicState {
 const initialState: MusicState = {
   musics: [],
   selectedMusic: null,
+
+  playingMusic: null,
+  musicPlaying: false,
 
   getAllPending: false,
   getAllSuccess: null,
@@ -113,7 +120,7 @@ const musicReducer = (state = initialState, action: any): MusicState => {
         addError: false,
         addSuccess: true,
         addPending: false,
-        musics: [action.payload, ...state.musics ],
+        musics: [action.payload, ...state.musics],
       };
     case ADD_MUSIC_FAILED:
       return {
@@ -179,13 +186,28 @@ const musicReducer = (state = initialState, action: any): MusicState => {
         ...state,
       };
     case SET_SELECTED_MUSIC:
-
       const music = state.musics.find(
         (music: any) => music._id === action.payload
       );
       return {
         ...state,
         selectedMusic: music,
+      };
+
+    case SET_PLAYING_MUSIC:
+      const musicPlaying = state.musics.find(
+        (music: any) => music._id === action.payload
+      );
+      return {
+        ...state,
+        playingMusic: musicPlaying,
+        musicPlaying: true,
+      };
+
+    case SET_MUSIC_PLAY:
+      return {
+        ...state,
+        musicPlaying: action.payload,
       };
 
     default:

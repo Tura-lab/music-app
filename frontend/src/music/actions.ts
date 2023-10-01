@@ -21,6 +21,8 @@ export const GET_FAVORITES = "GET_FAVORITES";
 export const GET_FAVORITES_SUCCESS = "GET_FAVORITES_SUCCESS";
 export const GET_FAVORITES_FAILED = "GET_FAVORITES_FAILED";
 export const SET_SELECTED_MUSIC = "SET_SELECTED_MUSIC";
+export const SET_PLAYING_MUSIC = "SET_PLAYING_MUSIC";
+export const SET_MUSIC_PLAY = "SET_MUSIC_PLAY";
 
 export const addMusic = (music: Music) => {
   return {
@@ -69,3 +71,19 @@ export const getFavorites = () => {
     type: GET_FAVORITES,
   };
 };
+
+export const setPlayingMusic = (id: string) => {
+  console.log("setPlayingMusic", id)
+  return {
+    type: SET_PLAYING_MUSIC,
+    payload: id,
+  };
+};
+
+export const setMusicPlay = (playing: boolean) => {
+  return {
+    type: SET_MUSIC_PLAY,
+    payload: playing,
+  };
+};
+

@@ -7,6 +7,7 @@ import EditModal from "./modals/EditModal";
 import UploadModal from "./modals/UploadModal";
 import DeleteModal from "./modals/DeleteModal";
 import { Toaster } from "react-hot-toast";
+import PlayingMusic from "./components/PlayingMusic";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
       <EditModal />
       <DeleteModal />
       <SongList />
+      <PlayingMusic />
     </div>
   );
 }

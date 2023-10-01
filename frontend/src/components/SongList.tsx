@@ -2,17 +2,22 @@
 
 import React, { useEffect } from "react";
 import Container from "./Container";
-import { AiFillPlayCircle } from "react-icons/ai";
+import { AiFillPlayCircle, AiFillPauseCircle } from "react-icons/ai";
 import { BiSolidPencil, BiTimeFive } from "react-icons/bi";
 import { BsTrashFill } from "react-icons/bs";
 
 import { useSelector, useDispatch } from "react-redux";
 import { openEditModal } from "../editModal/actions";
-import { getAllMusics, setSelectedMusic } from "../music/actions";
+import {
+  getAllMusics,
+  setMusicPlay,
+  setPlayingMusic,
+  setSelectedMusic,
+} from "../music/actions";
 import { openDeleteModal } from "../deleteModal/actions";
 import { RootState } from "../main";
 import ThreeDotLoader from "./ThreeDotLoader";
-import {toast} from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 const SongList = () => {
   const dispatch = useDispatch();
@@ -20,7 +25,11 @@ const SongList = () => {
   const getAllPending = useSelector(
     (state: RootState) => state.musicReducer.getAllPending
   );
-  const getAllError = useSelector((state: RootState) => state.musicReducer.getAllError);
+  const getAllError = useSelector(
+    (state: RootState) => state.musicReducer.getAllError
+  );
+  const playingMusic = useSelector((state: RootState) => state.musicReducer.playingMusic);
+  const isPlaying = useSelector((state: RootState) => state.musicReducer.musicPlaying);
 
   useEffect(() => {
     // get all musics
@@ -32,6 +41,16 @@ const SongList = () => {
       toast.error("Something went wrong");
     }
   }, [getAllError]);
+
+  const handlePlayClick = (id: string) => {
+    if (playingMusic?._id === id) {
+      dispatch(setMusicPlay(!isPlaying));
+      return;
+    }
+
+    // set the playing music
+    dispatch(setPlayingMusic(id));
+  };
 
   const handleDeleteClick = (id: string) => {
     // set the selected music
@@ -153,7 +172,9 @@ const SongList = () => {
                     gap: ".5rem",
                   }}
                 >
-                  <AiFillPlayCircle css={{ textAlign: "left" }} size={32} />
+                  <div onClick={() => handlePlayClick(music._id)}>
+                    {playingMusic?._id === music._id && isPlaying ? (<AiFillPauseCircle css={{ textAlign: "left" }} size={32} />) : (<AiFillPlayCircle css={{ textAlign: "left" }} size={32} />)}
+                  </div>
                   <div
                     css={{
                       display: "flex",
