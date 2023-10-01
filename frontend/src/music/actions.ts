@@ -24,10 +24,11 @@ export const SET_SELECTED_MUSIC = "SET_SELECTED_MUSIC";
 export const SET_PLAYING_MUSIC = "SET_PLAYING_MUSIC";
 export const SET_MUSIC_PLAY = "SET_MUSIC_PLAY";
 
-export const addMusic = (music: Music) => {
+export const addMusic = (music: Music, file:File) => {
   return {
     type: ADD_MUSIC,
     payload: music,
+    file: file
   };
 };
 

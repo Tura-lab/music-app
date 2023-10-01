@@ -3,6 +3,22 @@ require('dotenv').config()
 const express = require('express');
 const app = express();
 
+
+// route to upload music
+// app.post('/upload', upload.single('audio'), async (req, res) => {
+//   try {
+//     const result = await cloudinary.uploader.upload(req.file.path, {
+//       resource_type: 'video',
+//       format: 'mp3'
+//     });
+//     console.log("RESULT:", result)
+//     res.json(result);
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ message: 'Something went wrong' });
+//   }
+// });
+
 app.use(express.json({ limit: '50mb' }))
 
 // cors allow all origins

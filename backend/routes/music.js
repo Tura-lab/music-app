@@ -1,6 +1,29 @@
 const express = require("express");
 const router = express.Router();
 
+// Set up cloudinary
+const cloudinary = require("cloudinary").v2;
+const multer = require("multer");
+
+cloudinary.config({
+  cloud_name: "dqkd1gnef",
+  api_key: "817879615381634",
+  api_secret: "VcwTHXhG2vzYkS_HaMwbJHpGH4U",
+});
+
+const storage = multer.diskStorage({});
+
+const upload = multer({
+  storage,
+  limits: { fileSize: 1024 * 1024 * 50 }, // 50MB file size limit
+  fileFilter: (req, file, cb) => {
+    if (!file.mimetype.startsWith("audio/")) {
+      return cb(new Error("Only audio files are allowed!"));
+    }
+    cb(null, true);
+  },
+});
+
 const musicModel = require("../models/music");
 
 // get all musics
@@ -27,11 +50,21 @@ router.get("/:id", async (req, res, next) => {
 });
 
 // create one music
-router.post("/", async (req, res, next) => {
+router.post("/", upload.single("file"), async (req, res, next) => {
   try {
+    console.log("UPLOADING", req)
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      resource_type: "video",
+      format: "mp3",
+    });
+
+    console.log("RESULT:", result.url);
+
     console.log("ADDING");
     const musicData = req.body;
-    console.log(musicData)
+    musicData.file = result.url;
+
+    console.log(musicData);
     const music = await new musicModel(musicData).save();
 
     res.status(201).json(music);
@@ -65,10 +98,10 @@ router.patch("/:id", async (req, res, next) => {
 // delete one music
 router.delete("/:id", async (req, res, next) => {
   try {
-    console.log("DELETING", req.params.id)
+    console.log("DELETING", req.params.id);
     const music = await musicModel.deleteOne({ _id: req.params.id });
 
-    res.status(204).json({message: "Deleted successfully"});
+    res.status(204).json({ message: "Deleted successfully" });
   } catch (err) {
     console.log(err.message);
     res.status(500).json({ message: err.message });

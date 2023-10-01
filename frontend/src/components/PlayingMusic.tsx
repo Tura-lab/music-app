@@ -153,7 +153,7 @@ const PlayingMusic = () => {
             gap: ".4rem",
           }}
         >
-          <div>0:00</div>
+          <div>{timeElapsed}</div>
           <div
             css={{
               display: "flex",
@@ -189,7 +189,7 @@ const PlayingMusic = () => {
               }}
             ></div>
           </div>
-          <div>{timeElapsed}</div>
+          <div>{playingMusic.duration}</div>
         </div>
         {/* The controls */}
         <div

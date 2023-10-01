@@ -23,7 +23,7 @@ import {
   GET_ALL_MUSICS_REQUESTED,
 } from "./actions";
 
-const baseUrl = "https://music-hall.vercel.app";
+const baseUrl = "https://music-hall-io.vercel.app"
 
 const getFavoritesFetch = async (userId: string) => {
   const response = await axios.get(`${baseUrl}/music/favorites/${userId}`);
@@ -42,9 +42,23 @@ const getMusicByIdFetch = async (id: string) => {
   return response.data;
 }
 
-const addMusicFetch = async (music: any) => {
-  const response = await axios.post(`${baseUrl}/music`, music);
+const addMusicFetch = async (music: any, file:File) => {
+
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('title', music.title);
+  formData.append('artist', music.artist);
+  formData.append('duration', music.duration)
+
+  const response = await axios({
+    method: "POST",
+    url: `${baseUrl}/music`,
+    data: formData,
+    headers: {"Content-Type": "multipart/form-data"}
+  })
+
   return response.data;
+
 }
 
 const editMusicFetch = async (id: string, music: any) => {
@@ -79,7 +93,7 @@ function* workGetMusicById(action: any): any {
 function* workAddMusic(action: any): any {
   try {
     yield put({ type: ADD_MUSIC_REQUESTED });
-    const music = yield call(addMusicFetch, action.payload)
+    const music = yield call(addMusicFetch, action.payload, action.file)
     yield put({ type: ADD_MUSIC_SUCCESS, payload: music });
   } catch (e: any) {
     yield put({ type: ADD_MUSIC_FAILED, message: e.message });
