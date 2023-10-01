@@ -3,7 +3,7 @@ import { BiSkipNext, BiSkipPrevious } from "react-icons/bi";
 import { AiFillPlayCircle, AiFillPauseCircle } from "react-icons/ai";
 import { RootState } from "../main";
 import { useDispatch, useSelector } from "react-redux";
-import { setMusicPlay } from "../music/actions";
+import { playNext, playPrevious, setMusicPlay } from "../music/actions";
 import { useEffect, useState } from "react";
 
 const PlayingMusic = () => {
@@ -50,13 +50,6 @@ const PlayingMusic = () => {
   }, [audio]);
 
   useEffect(() => {
-    if (!audio) {
-      return;
-    }
-    audio.play();
-  }, [audio]);
-
-  useEffect(() => {
     if (!playingMusic) {
       setAudio(null);
       return;
@@ -70,10 +63,19 @@ const PlayingMusic = () => {
     // setAudio(new Audio(playingMusic.file));
 
     setAudio((aud) => {
-        aud?.pause()
-        return new Audio(playingMusic.file);
-    })
+      aud?.pause();
+      return new Audio(playingMusic.file);
+    });
   }, [playingMusic]);
+
+  useEffect(() => {
+    if (!audio) {
+      return;
+    }
+    dispatch(setMusicPlay(true));
+    audio.play();
+  }, [audio]);
+
 
   useEffect(() => {
     console.log("isPlaying", isPlaying);
@@ -91,6 +93,7 @@ const PlayingMusic = () => {
   }
 
   const togglePlaying = () => {
+    console.log("togglePlaying");
     dispatch(setMusicPlay(!isPlaying));
   };
 
@@ -148,6 +151,9 @@ const PlayingMusic = () => {
           css={{
             display: "flex",
             width: "60%",
+            "@media (max-width: 890px)": {
+              width: "100%",
+            },
             alignItems: "center",
             justifyContent: "center",
             gap: ".4rem",
@@ -200,10 +206,16 @@ const PlayingMusic = () => {
           }}
         >
           <div
+            onClick={() => {
+              dispatch(playPrevious());
+            }}
             css={{
+              color: "grey",
               ":hover": {
                 cursor: "pointer",
+                color: "black",
               },
+              transition: "color .2s",
             }}
           >
             <BiSkipPrevious size={40} />
@@ -225,10 +237,16 @@ const PlayingMusic = () => {
             )}
           </div>
           <div
+            onClick={() => {
+              dispatch(playNext());
+            }}
             css={{
+              color: "grey",
               ":hover": {
                 cursor: "pointer",
+                color: "black",
               },
+              transition: "color .2s",
             }}
           >
             <BiSkipNext size={40} />

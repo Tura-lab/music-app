@@ -23,6 +23,8 @@ export const GET_FAVORITES_FAILED = "GET_FAVORITES_FAILED";
 export const SET_SELECTED_MUSIC = "SET_SELECTED_MUSIC";
 export const SET_PLAYING_MUSIC = "SET_PLAYING_MUSIC";
 export const SET_MUSIC_PLAY = "SET_MUSIC_PLAY";
+export const PLAY_NEXT = "PLAY_NEXT";
+export const PLAY_PREVIOUS = "PLAY_PREVIOUS";
 
 export const addMusic = (music: Music, file:File) => {
   return {
@@ -88,3 +90,14 @@ export const setMusicPlay = (playing: boolean) => {
   };
 };
 
+export const playNext = () => {
+  return {
+    type: PLAY_NEXT,
+  };
+};
+
+export const playPrevious = () => {
+  return {
+    type: PLAY_PREVIOUS,
+  };
+};

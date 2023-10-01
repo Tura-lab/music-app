@@ -172,7 +172,16 @@ const SongList = () => {
                     gap: ".5rem",
                   }}
                 >
-                  <div onClick={() => handlePlayClick(music._id)}>
+                  <div 
+                    onClick={() => handlePlayClick(music._id)}
+                    css={{
+                      transition: "scale .2s ease-in-out",
+                      ":hover": {
+                        cursor: "pointer",
+                        scale: "1.1",
+                      }
+                    }}
+                  >
                     {playingMusic?._id === music._id && isPlaying ? (<AiFillPauseCircle css={{ textAlign: "left" }} size={32} />) : (<AiFillPlayCircle css={{ textAlign: "left" }} size={32} />)}
                   </div>
                   <div

@@ -18,6 +18,8 @@ import {
   EDIT_MUSIC_REQUESTED,
   SET_PLAYING_MUSIC,
   SET_MUSIC_PLAY,
+  PLAY_NEXT,
+  PLAY_PREVIOUS
 } from "./actions";
 
 interface MusicState {
@@ -208,6 +210,39 @@ const musicReducer = (state = initialState, action: any): MusicState => {
       return {
         ...state,
         musicPlaying: action.payload,
+      };
+
+    case PLAY_NEXT:
+    
+      // find the index of the current music
+      const index = state.musics.findIndex(
+        (music: any) => music._id === state.playingMusic._id
+      );
+
+      // get the next music if it is the last one, get the first one
+      const nextMusic = index === state.musics.length - 1
+        ? state.musics[0]
+        : state.musics[index + 1];
+
+      return {
+        ...state,
+        playingMusic: nextMusic,
+      };
+
+    case PLAY_PREVIOUS:
+      // find the index of the current music
+      const indexPrevious = state.musics.findIndex(
+        (music: any) => music._id === state.playingMusic._id
+      );
+
+      // get the previous music if it is the first one, get the last one
+      const previousMusic = indexPrevious === 0
+        ? state.musics[state.musics.length - 1]
+        : state.musics[indexPrevious - 1];
+
+      return {
+        ...state,
+        playingMusic: previousMusic,
       };
 
     default:
