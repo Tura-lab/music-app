@@ -147,7 +147,7 @@ const PlayingMusic = () => {
         <div
           css={{
             display: "flex",
-            width: "100%",
+            width: "60%",
             alignItems: "center",
             justifyContent: "center",
             gap: ".4rem",

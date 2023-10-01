@@ -23,7 +23,7 @@ import {
   GET_ALL_MUSICS_REQUESTED,
 } from "./actions";
 
-const baseUrl = "https://music-hall-io.vercel.app"
+const baseUrl = "https://music-hall.vercel.app"
 
 const getFavoritesFetch = async (userId: string) => {
   const response = await axios.get(`${baseUrl}/music/favorites/${userId}`);
