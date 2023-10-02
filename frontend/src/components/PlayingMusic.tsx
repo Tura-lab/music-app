@@ -201,6 +201,9 @@ const PlayingMusic = () => {
                 ":focus": {
                   outline: "none",
                 },
+                ":hover": {
+                  cursor: "pointer"
+                }
               }}
               value={timeElapsedInPercentage * 1000}
             />
