@@ -20,17 +20,33 @@ const PlayingMusic = () => {
     (state: RootState) => state.musicReducer.playingMusic
   );
 
+  const handleSeekChange = (e: any) => {
+    console.log("handleSeekChange", e.target.value);
+    if (!audio) {
+      return;
+    }
+
+    console.log("handleSeekChange", e.target.value);
+
+    const seekValue = e.target.value;
+    const totalAudioTime = audio?.duration || 0;
+
+    const newAudioTime = (seekValue / 100000) * totalAudioTime;
+    audio.currentTime = newAudioTime;
+
+    // check if audio is playing
+    if (isPlaying) {
+      audio.play();
+    }
+  };
+
   const getTimeElapsed = () => {
     if (!audio) {
       return "0:00";
     }
-    // add a zero in front of the number if it is less than 10
     const addZero = (n: number) => (n < 10 ? "0" + n : n);
-    // get the minutes
     const minutes = Math.floor(audio.currentTime / 60);
-    // get the seconds
     const seconds = Math.floor(audio.currentTime % 60);
-    // return the time elapsed
     return `${minutes}:${addZero(seconds)}`;
   };
 
@@ -75,7 +91,6 @@ const PlayingMusic = () => {
     dispatch(setMusicPlay(true));
     audio.play();
   }, [audio]);
-
 
   useEffect(() => {
     console.log("isPlaying", isPlaying);
@@ -159,43 +174,45 @@ const PlayingMusic = () => {
             gap: ".4rem",
           }}
         >
-          <div>{timeElapsed}</div>
+          <div
+            css={{
+              width: "2.4rem",
+              textAlign: "left",
+            }}
+          >
+            {timeElapsed}
+          </div>
           <div
             css={{
               display: "flex",
               alignItems: "center",
               height: ".3rem",
               width: "100%",
-              backgroundColor: "grey",
               borderRadius: "10%",
             }}
           >
-            <div
+            <input
+              type="range"
+              min={0}
+              max={100000}
+              onInput={handleSeekChange}
               css={{
-                width: timeElapsedInPercentage + "%",
-                height: "100%",
-                backgroundColor: "red",
-                borderRadius: "10%",
-                transition: "width .1s ease-in-out",
-              }}
-            ></div>
-            {/* The circle thingy */}
-            <div
-              css={{
-                width: "1rem",
-                height: "1rem",
-                backgroundColor: "red",
-                // get the percentage of the time elapsed
-                borderRadius: "50%",
-                transtion: "scale .2s ease-in-out",
-                ":hover": {
-                  cursor: "pointer",
-                  scale: "1.2",
+                width: "100%",
+                ":focus": {
+                  outline: "none",
                 },
               }}
-            ></div>
+              value={timeElapsedInPercentage * 1000}
+            />
           </div>
-          <div>{playingMusic.duration}</div>
+          <div
+            css={{
+              width: "2.4rem",
+              textAlign: "right",
+            }}
+          >
+            {playingMusic.duration}
+          </div>
         </div>
         {/* The controls */}
         <div
